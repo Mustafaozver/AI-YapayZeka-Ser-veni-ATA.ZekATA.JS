@@ -1,0 +1,259 @@
+<html>
+<head>
+<script src="Yapay Zeka (AI) ZekATA V2.0.js"></script>
+<--! <iscript src="gecici.0.js"></iscript> -->
+<script>
+//
+</script>
+<script>
+
+ATA["ZekATA"]["Dil İfade"]["Türkçe"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["_Oluştur"] = function(oSif, deger) {
+ var sifat = {};
+ sifat.deger = deger;
+ sifat.ad = oSif;
+ ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["#" + oSif.toLowerCase()] = sifat;
+};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"]["Ad"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"]["Ad"]["Denetle"] = function(oOgeler) {
+ var deger = 0;
+ if (ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["#" + oOgeler.toLowerCase()]) ;////////
+};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Çöz"] = function(oCum) {
+ var kelimeler = oCum.split(" ");
+
+};
+
+
+</script>
+<script>
+
+var x_0 = 0;
+var x_o = 400;
+var y_o = 300;
+var skala_ = 40;
+
+function grid_() {
+ ctx.clearRect(0,0,doc.width,doc.height);
+ for (var i=0;i<y_o*2;i+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.beginPath();
+  ctx.lineTo(5,i);
+  ctx.lineTo(x_o*2-5,i);
+  ctx.lineWidth = 0.5;
+  if (i == y_o) ctx.strokeStyle = "#808080FF";
+  else ctx.strokeStyle = "#80808050";
+  ctx.stroke();
+ }
+ for (var i=0;i<x_o*2;i+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.beginPath();
+  ctx.lineTo(i,5);
+  ctx.lineTo(i,y_o*2-5);
+  ctx.lineWidth = 0.5;
+  if (i == x_o) ctx.strokeStyle = "#808080FF";
+  else ctx.strokeStyle = "#80808050";
+  ctx.stroke();
+ }
+}
+
+function yap_r() {
+ console.log("Bekleyin...");
+}
+var yap_g = yap_r;
+var yap_b = yap_g;
+var yap_y = yap_g;
+
+var oncekiler = [0,0,0];
+var integraller = [0,0,0];
+function ciz_r() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumr(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#FF0000FF";
+ ctx.stroke();
+}
+
+function ciz_g() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumg(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#00FF00FF";
+ ctx.stroke();
+}
+
+function ciz_b() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumb(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#0000FFFF";
+ ctx.stroke();
+}
+
+function ciz_y() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumy(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#E0E000FF";
+ ctx.stroke();
+}
+
+function fonksiyonumr(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumr.value + ");\ndeger");
+ //noron1["Çalıştır"]();
+ //Y = ATA["ZekATA"]["Dil İfade"]["01_ESAS"](noron1["Var Değer Y"][0])
+ return Y*skala_;
+}
+
+function fonksiyonumg(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumg.value + ");\ndeger");
+ //noron1["Çalıştır"]();
+ //Y = ATA["ZekATA"]["Dil İfade"]["01_ESAS"](noron1["Var Değer Y"][0])
+ return Y*skala_;
+}
+
+function fonksiyonumb(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumb.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumy(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumy.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function NC_() {
+ noron1["Çalıştır"]();
+ var ck = ATA["ZekATA"]["VE"](noron1["Başarı"]);
+ return ck;
+}
+
+var noron1 = ATA["ZekATA"]["Nöron"]["Oluştur"](2);
+noron1["Hedef"] = 0;
+noron1["Koşul Denetimi"] = function(arr_) {
+ var kosullar = [];
+ kosullar.push(1);
+ //kosullar.push(ATA["ZekATA"]["DEĞİL"](ATA["ZekATA"]["Dil İfade"]["ESAS_01"](arr_[1])));
+ //kosullar.push(ATA["ZekATA"]["DEĞİL"](ATA["ZekATA"]["ÖVEYA"]([ATA["ZekATA"]["Dil İfade"]["ESAS_01"](arr_[1]),0])));
+ return ATA["ZekATA"]["VE"](kosullar);
+};
+
+noron1["XO"] = [];
+noron1["Yön"] = [];
+noron1["Başarı"] = [];
+
+for (var i=0;i<3;i++) {
+ noron1["XO"].push(0.001);
+ noron1["Başarı"].push(0);
+ noron1["Yön"].push((Math.random()-0.5)*0.5 + 1*((Math.random()<0.5)?1.001:-1.001));
+}
+
+
+var oDEFs = [];
+oDEFs.push(2*(Math.random()-0.5));
+oDEFs.push(2*(Math.random()-0.5));
+oDEFs.push(2*(Math.random()-0.5));
+/*
+var _y1 = function(DEFs,X) {
+ var sind = Math.sin(X*DEFs[1] + DEFs[2]);
+ sind = (sind<0)?sind:sind;
+ return DEFs[0]*sind + DEFs[3];
+};
+
+var _y2 = function(X) {
+ var sind = Math.sin(X*oDEFs[1] + oDEFs[2]);
+ sind = (sind<0)?-Math.sqrt(-sind):Math.sqrt(sind);
+ return oDEFs[0]*sind + oDEFs[3];
+};
+*/
+
+var _y1 = function(DEFs,X) {
+ return DEFs[0]*X*X + X*DEFs[1] + DEFs[2];
+};
+
+var _y2 = function(X) {
+ var DEFs = oDEFs;
+ return DEFs[0]*X*X + X*DEFs[1] + DEFs[2];
+};
+
+/*
+String.fromCharCode(52)
+"A".charCodeAt(0)
+*/
+
+noron1["_D"] = 0;
+noron1["F"] = function(X) {
+ var Y = 1;
+ for (var i=-10;i<10;i++) Y += Math.pow(_y1(X,i) - _y2(i),2);
+ return Y/10000;
+};
+// noron1["Kalıtım Ekle"]("SAYI",0);
+
+</script>
+</head>
+<body>
+<table id="tabloa" style="display:none;">
+<tr><td>
+
+
+<button onclick="grid_();">Temizle</button><br/>
+<font color="red">Y</font> = <input type="text" id="fonksiyonumr" value="7" /><button onclick="yap_r();">Tamam</button><br/>
+<font color="green">Y</font> = <input type="text" id="fonksiyonumg" value="NC_()*7" /><button onclick="yap_g();">Tamam</button><br/>
+<font color="blue">Y</font> = <input type="text" id="fonksiyonumb" value="_y2(x)" /><button onclick="yap_b();">Tamam</button><br/>
+<font color="yellow">Y</font> = <input type="text" id="fonksiyonumy" value="_y1(noron1.XO, x)" /><button onclick="yap_y();">Tamam</button><br/>
+
+
+</td></tr>
+<tr><td>
+<canvas width="800" height="600" id="tuval" style="width:100%;height:100%;border:1px solid gray;background-color:white;"></canvas>
+</td></tr>
+</table>
+<script>
+var doc,ctx;
+setTimeout(function() {
+ document.all.tabloa.style.display = "";
+ doc = document.all.tuval;
+ ctx = doc.getContext("2d");
+ grid_();
+ yap_r = function() {
+  ciz_r();
+ };
+ yap_g = function() {
+  ciz_g();
+ };
+ yap_b = function() {
+  ciz_b();
+ };
+ yap_y = function() {
+  ciz_y();
+ };
+},1000);
+</script>
+</body>
+</html>

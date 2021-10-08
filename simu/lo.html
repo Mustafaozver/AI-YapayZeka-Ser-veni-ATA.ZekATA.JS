@@ -1,0 +1,77 @@
+<html>
+<body>
+<script src="simu.js"></script>
+<script>
+var f = function(t) {return t}; // example function
+
+function ro(t) {
+	var tf = fre(t);
+	var sinft = tf*Math.sin(-2*Math.PI*t);
+	var cosft = tf*Math.cos(-2*Math.PI*t);
+}
+
+/*
+f = fre
+g = f
+fourier_i(t) = g(t)*exp(2Pft) = (cos(2Pft) + i*sin(2Pft))*g(t)
+[E(i=0,2P) => (img(fourier_i(t))**2 + real(fourier_i(t))**2)**0.5
+*/
+</script>
+<canvas id="textureCanvas" style="display:;border:1px solid gray;width:800px;height:800px;" width="500" height="500"></canvas>
+<script>
+
+
+function setTransform_ctx(agl1, agl2) {
+	var angle1 = agl1*Math.PI/180;
+	var angle2 = agl2*Math.PI/180;
+	var cs = Math.cos(angle1), sn = Math.sin(angle1);
+	var h = Math.cos(angle2);
+	var a = 1*cs, b = -1*sn, c = 2;
+	var d = h*1*sn, e = h*1*cs, f = 2;
+	ctx.setTransform(a, d, b, e, c, f);
+}
+
+var canvas = document.getElementById('textureCanvas');
+var ctx = canvas.getContext('2d');
+
+function two(number) {
+	if (number < 10) return "0" + number;
+	else return number;
+}
+
+
+function drawClock() {
+	var date = new Date();
+	var text = two(date.getHours()) + ":" + two(date.getMinutes()) + ":" + two(date.getSeconds());
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	ctx.fillStyle = "#0000b3";
+	ctx.fillRect(0, 0, 500,500); // draw a box
+	ctx.fillStyle = "#4d4cff"; // shell of the text
+	ctx.lineWidth = 5; // weight of the text
+	ctx.strokeStyle = "#f0f0e1"; // color of the text
+	ctx.save();
+	ctx.font = "bold 50px Calibri";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	var leftOffset = 500 / 2;
+	var topOffset = 500 / 2;
+	ctx.strokeText(text, leftOffset, topOffset);
+	ctx.fillText(text, leftOffset, topOffset);
+	ctx.restore();	
+}
+
+var agl1=0, agl2=0;
+var agl1_=0, agl2_=0.1;
+setInterval(function() {
+	agl1 += agl1_;
+	agl2 += agl2_;
+	setTransform_ctx(agl1, agl2);
+	drawClock();
+},100);
+
+// write white text with black border
+
+
+// bind our canvas to a 2D texture
+
+</script>

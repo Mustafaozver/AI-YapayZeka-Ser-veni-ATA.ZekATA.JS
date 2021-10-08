@@ -1,0 +1,186 @@
+<html>
+<head>
+<script src="v3.js"></script>
+
+<script>
+/*
+ATA["ZekATA"]["Dil İfade"]["Türkçe"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["_Oluştur"] = function(oSif, deger) {
+ var sifat = {};
+ sifat.deger = deger;
+ sifat.ad = oSif;
+ ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["#" + oSif.toLowerCase()] = sifat;
+};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"]["Ad"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"]["Ad"]["Denetle"] = function(oOgeler) {
+ var deger = 0;
+ if (ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["#" + oOgeler.toLowerCase()]) ;////////
+};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Çöz"] = function(oCum) {
+ var kelimeler = oCum.split(" ");
+
+};
+*/
+
+
+
+
+
+</script>
+<script>
+
+var x_0 = 0;
+var x_o = 400;
+var y_o = 300;
+var skala_ = 40;
+
+function grid_() {
+ ctx.clearRect(0,0,doc.width,doc.height);
+ for (var i=0;i<y_o*2;i+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.beginPath();
+  ctx.lineTo(5,i);
+  ctx.lineTo(x_o*2-5,i);
+  ctx.lineWidth = 0.5;
+  if (i == y_o) ctx.strokeStyle = "#808080FF";
+  else ctx.strokeStyle = "#80808050";
+  ctx.stroke();
+ }
+ for (var i=0;i<x_o*2;i+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.beginPath();
+  ctx.lineTo(i,5);
+  ctx.lineTo(i,y_o*2-5);
+  ctx.lineWidth = 0.5;
+  if (i == x_o) ctx.strokeStyle = "#808080FF";
+  else ctx.strokeStyle = "#80808050";
+  ctx.stroke();
+ }
+}
+
+var yap_r = function yap() {console.log("Bekleyin...");};
+var yap_g = yap_r;
+var yap_b = yap_g;
+var yap_y = yap_b;
+
+var oncekiler = [0,0,0];
+var integraller = [0,0,0];
+function ciz_r() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumr(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#FF0000FF";
+ ctx.stroke();
+}
+
+function ciz_g() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumg(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#00FF00FF";
+ ctx.stroke();
+}
+
+function ciz_b() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumb(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#0000FFFF";
+ ctx.stroke();
+}
+
+function ciz_y() {
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ for(var t=-x_o;t<x_o;t++) {
+  var X = x_o + t;
+  var Y = y_o - fonksiyonumy(t/skala_);
+  ctx.lineTo(X,Y); // dongu
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#D4D400FF";
+ ctx.stroke();
+}
+
+function fonksiyonumr(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumr.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumg(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumg.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumb(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumb.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumy(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumy.value + ");\ndeger");
+ return Y*skala_;
+}
+</script>
+</head>
+<body>
+<table id="tabloa" style="display:none;">
+<tr><td>
+
+
+<button onclick="grid_();">Temizle</button><br/>
+<font color="red">Y</font> = <input type="text" id="fonksiyonumr" value="7" /><button onclick="yap_r();">Tamam</button><br/>
+<font color="green">Y</font> = <input type="text" id="fonksiyonumg" value="Math.sin(x)" /><button onclick="yap_g();">Tamam</button><br/>
+<font color="blue">Y</font> = <input type="text" id="fonksiyonumb" value="Math.cos(x)" /><button onclick="yap_b();">Tamam</button><br/>
+<font color="yellow">Y</font> = <input type="text" id="fonksiyonumy" value="Math.random()" /><button onclick="yap_y();">Tamam</button><br/>
+
+
+</td></tr>
+<tr><td>
+<canvas width="800" height="600" id="tuval" style="width:100%;height:100%;border:1px solid gray;background-color:white;"></canvas>
+</td></tr>
+</table>
+<script>
+var doc,ctx;
+setTimeout(function() {
+ document.all.tabloa.style.display = "";
+ doc = document.all.tuval;
+ ctx = doc.getContext("2d");
+ grid_();
+ yap_r = function() {
+  ciz_r();
+ };
+ yap_g = function() {
+  ciz_g();
+ };
+ yap_b = function() {
+  ciz_b();
+ };
+ yap_y = function() {
+  ciz_y();
+ };
+},1000);
+</script>
+</body>
+</html>

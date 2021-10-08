@@ -1,0 +1,602 @@
+<html>
+<head>
+<script src="prototypes.js"></script>
+<script src="ataai.js"></script>
+
+<script>
+/*
+ATA["ZekATA"]["Dil İfade"]["Türkçe"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["_Oluştur"] = function(oSif, deger) {
+ var sifat = {};
+ sifat.deger = deger;
+ sifat.ad = oSif;
+ ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["#" + oSif.toLowerCase()] = sifat;
+};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"]["Ad"] = {};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Cümle Yapıları"]["Ad"]["Denetle"] = function(oOgeler) {
+ var deger = 0;
+ if (ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Sıfatlar"]["#" + oOgeler.toLowerCase()]) ;////////
+};
+ATA["ZekATA"]["Dil İfade"]["Türkçe"]["Çöz"] = function(oCum) {
+ var kelimeler = oCum.split(" ");
+
+};
+*/
+
+
+var gradient_descent = {
+	maxIters: 10, // Maximum number of iterations
+	gammax: 10**-3  // Step size multiplier
+};
+
+gradient_descent.Params = [0,0,0];
+gradient_descent.FUNC_0riginal = function(x) { return  (x/5).sin()*5 + 1;};
+gradient_descent.FUNC_Predicted = function(x) { return (this.Params[0]*x).cos()*this.Params[1] + this.Params[2]};
+gradient_descent.FUNC = function(x) {
+	var step;
+	var correlation = 1;
+	var negatives,positives;
+	var preF = [];
+	var orjF = [];
+	for (var i=0;i<this.maxIters;i++) {
+		for (var k=0;k<this.Params.length;k++) {
+			preF = [];
+			orjF = [];
+			for (var j=-250;j<200;j+=10*Math.random()) {
+				preF.push(this.FUNC_Predicted(j*Math.PI/180));
+				orjF.push(this.FUNC_0riginal(j*Math.PI/180));
+			}
+			step = preF.map(function(item,index){return item-orjF[index];});
+			//correlation = (2+preF.correlation(orjF))/3;
+			positives = step.reduce(function(acc,curr){return acc=acc+(curr>0)?curr*curr:0},0);
+			negatives = step.reduce(function(acc,curr){return acc=acc+(curr<0)?curr*curr:0},0);
+			if (positives > negatives) this.Params[k] -= positives*this.gammax/step.length;//*(0.9+Math.random()/10);
+			else if (positives < negatives) this.Params[k] += negatives*this.gammax/step.length;//*(0.9+Math.random()/10);
+			else this.Params[k] += (negatives - positives)*this.gammax;//*(1+Math.random()/10);
+		}
+	}
+	return this.FUNC_Predicted(x);
+};
+
+
+
+
+</script>
+<script>
+
+var x_0 = 0;
+var x_step = 1;
+var x_o = 400;
+var y_o = 300;
+var skala_ = 20;
+var pointtime = 10;
+var pisdg = 23.008881569224855;
+var ffv_arr = [[0,0]];
+var ffvxy_arr = [["0","0"]];
+
+var oper = {};
+oper.turev = function(i) {
+ if (i == 0) return ffvxy_arr[i][1]/ffvxy_arr[i][0]*skala_/x_step;
+ return (ffvxy_arr[i][1] - ffvxy_arr[i-1][1])/(ffvxy_arr[i][0] - ffvxy_arr[i-1][0])*skala_/x_step;
+};
+
+oper.integral = function(i) {
+ var top = 0;
+ for (;i>0;i--) {
+  top += ffvxy_arr[i][1]*(ffvxy_arr[i][0]-ffvxy_arr[i-1][0]);
+ }
+ return top/skala_*x_step;
+};
+
+function FileSave(filename = 'unnamed.png') {
+ var a = document.createElement('a');
+ a.href = doc.toDataURL("image/png");
+ a.download = filename;
+ document.body.appendChild(a);
+ a.click();
+}
+
+function scalation(x) {
+ if (false) return x;
+ var step = skala_*14;
+ while (Math.abs(x) > step) x /= step;
+ return x;
+}
+
+var pointer_kayma = skala_ + 2;
+
+function ffv_setPos(i) {
+ if (i < ffv_arr.length) {
+  setTimeout("ffv_setPos(" + (i+1) + ");",pointtime);
+  document.all.pointerh.style.display = "";
+  document.all.pointerv.style.display = "";
+ } else {
+  document.all.pointerh.style.display = "none";
+  document.all.pointerv.style.display = "none";
+  return;
+ }
+ var canvasxy = getOffset(doc);
+ document.all.pointerh.style.left = (canvasxy[0] - pointer_kayma + ffv_arr[i][0]) + "px";
+ document.all.pointerv.style.top = (canvasxy[1] - pointer_kayma + ffv_arr[i][1]) + "px";
+
+ document.all.pointerh.style.top = (canvasxy[1] - pointer_kayma) + "px";
+ document.all.pointerv.style.left = (canvasxy[0] - pointer_kayma) + "px";
+
+ document.all.pointerh.innerText = "X:" + (ffvxy_arr[i][0]/skala_).toFixed(3);
+ document.all.pointerv.innerText = "Y:" + (ffvxy_arr[i][1]/skala_).toFixed(3);
+ 
+ pointer.style.left = (canvasxy[0] - pointer_kayma + ffv_arr[i][0] - 3) + "px";
+ pointer.style.top = (canvasxy[1] - pointer_kayma + ffv_arr[i][1] - 3) + "px";
+}
+
+function getOffset(el) {
+ var _x = 0;
+ var _y = 0;
+ while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+  _x += el.offsetLeft - el.scrollLeft;
+  _y += el.offsetTop - el.scrollTop;
+  el = el.offsetParent;
+ }
+ _x += document.body.scrollLeft;
+ _y += document.body.scrollTop;
+ return [_x, _y];
+}
+
+function grid_() {
+ ctx.clearRect(0,0,doc.width,doc.height);
+ for (var i=0;i<y_o*2;i+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.beginPath();
+  ctx.lineTo(5,i);
+  ctx.lineTo(x_o*2-5,i);
+  ctx.lineWidth = 0.5;
+  if (i == y_o) ctx.strokeStyle = "#808080FF";
+  else ctx.strokeStyle = "#80808060";
+  ctx.stroke();
+ }
+ for (var i=0;i<x_o*2;i+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.beginPath();
+  ctx.lineTo(i,5);
+  ctx.lineTo(i,y_o*2-5);
+  ctx.lineWidth = 0.5;
+  if (i == x_o) ctx.strokeStyle = "#808080FF";
+  else ctx.strokeStyle = "#80808060";
+  ctx.stroke();
+ }
+}
+
+function readyGrp(ino) {
+ var bt_ = 120;
+ return;
+ switch(ino) {
+  default:
+   document.all.tuval.style.backgroundColor = "red";
+   setTimeout("readyGrp(0)",bt_);
+   break;
+  case 0:
+   document.all.tuval.style.backgroundColor = "green";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 1:
+   document.all.tuval.style.backgroundColor = "blue";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 2:
+   document.all.tuval.style.backgroundColor = "#FFFF00";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 3:
+   document.all.tuval.style.backgroundColor = "#FF00FF";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 4:
+   document.all.tuval.style.backgroundColor = "#00FFFF";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 5:
+   document.all.tuval.style.backgroundColor = "#000000";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 6:
+   document.all.tuval.style.backgroundColor = "#808080";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 7:
+   document.all.tuval.style.backgroundColor = "#353526";
+   setTimeout("readyGrp("+(1+ino)+")",bt_);
+   break;
+  case 8:break;
+ }
+}
+
+function grid_circular() {
+ ctx.clearRect(0,0,doc.width,doc.height); // yatay
+ ctx.moveTo(0,0);
+ ctx.beginPath();
+ ctx.lineWidth = 0.5;
+ ctx.lineTo(5,y_o);
+ ctx.lineTo(x_o*2-5,y_o);
+ ctx.strokeStyle = "#808080FF";
+ ctx.stroke();
+ ctx.moveTo(0,0); // dikey
+ ctx.beginPath();
+ ctx.lineWidth = 0.5;
+ ctx.lineTo(x_o,5);
+ ctx.lineTo(x_o,y_o*2-5);
+ ctx.strokeStyle = "#808080FF";
+ ctx.stroke();
+ var grd_ = 12;
+ for (var j=20;j<x_o*2;j+=20) {
+  ctx.moveTo(0,0); // kur
+  ctx.strokeStyle = "#80808060";
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  for (var i=0;i<=360;i+=5) {
+   var X = x_o + j*Math.cos(i/180*Math.PI);
+   var Y = y_o - j*Math.sin(i/180*Math.PI);
+   ctx.lineTo(X,Y);
+  }
+   ctx.stroke();
+ }
+}
+
+var yap_r = function yap() {console.log("Bekleyin...");};
+var yap_g = yap_r;
+var yap_b = yap_g;
+var yap_y = yap_b;
+var yap_rcircular = yap_b;
+var yap_gcircular = yap_rcircular;
+var yap_bcircular = yap_gcircular;
+var yap_ycircular = yap_bcircular;
+
+var oncekiler = [0,0,0];
+var integraller = [0,0,0];
+function ciz_r() {
+ if (document.all.grid.checked) grid_();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var t=-x_o+pisdg;t<x_o-pisdg;t+=eval(x_step)) {
+  ffvxy_arr.push([t,fonksiyonumr(t/skala_)]);
+  var X = x_o + ffvxy_arr[ffvxy_arr.length-1][0];
+  var Y = y_o - ffvxy_arr[ffvxy_arr.length-1][1];
+  ctx.lineTo(X,y_o - scalation(ffvxy_arr[ffvxy_arr.length-1][1])); // dongu
+  ffv_arr.push([X,Y]);
+ }
+ ctx.lineWidth = 1.7; // bitir
+ ctx.strokeStyle = "#FF0000FF";
+ ctx.stroke();
+ if (document.all.turev.checked) {
+  ctx.moveTo(0,0); // turev
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.turev(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#FF000088";
+  ctx.stroke();
+ }
+ if (document.all.integral.checked) {
+  ctx.moveTo(0,0); // integral
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.integral(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#0000FF88";
+  ctx.stroke();
+ }
+ readyGrp();
+}
+
+function ciz_rcircular() {
+ if (document.all.rgrid.checked) grid_circular();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var i=-360;i<=360;i+=eval(x_step)) {
+  var j = fonksiyonumr(i/180*Math.PI);
+  var X = x_o + j*Math.cos(i/180*Math.PI);
+  var Y = y_o - j*Math.sin(i/180*Math.PI);
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+  ffvxy_arr.push([i,j]);
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#FF0000FF";
+ ctx.stroke();
+ readyGrp();
+}
+
+function ciz_g() {
+ if (document.all.grid.checked) grid_();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var t=-x_o+pisdg;t<x_o-pisdg;t+=eval(x_step)) {
+  ffvxy_arr.push([t,fonksiyonumg(t/skala_)]);
+  var X = x_o + ffvxy_arr[ffvxy_arr.length-1][0];
+  var Y = y_o - ffvxy_arr[ffvxy_arr.length-1][1];
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+ }
+ ctx.lineWidth = 1.7; // bitir
+ ctx.strokeStyle = "#00FF00FF";
+ ctx.stroke();
+ if (document.all.turev.checked) {
+  ctx.moveTo(0,0); // turev
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.turev(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#FF000088";
+  ctx.stroke();
+ }
+ if (document.all.integral.checked) {
+  ctx.moveTo(0,0); // integral
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.integral(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#0000FF88";
+  ctx.stroke();
+ }
+ readyGrp();
+}
+
+function ciz_gcircular() {
+ if (document.all.rgrid.checked) grid_circular();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var i=-360;i<=360;i+=eval(x_step)) {
+  var j = fonksiyonumg(i/180*Math.PI);
+  var X = x_o + j*Math.cos(i/180*Math.PI);
+  var Y = y_o - j*Math.sin(i/180*Math.PI);
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+  ffvxy_arr.push([i,j]);
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#00FF00FF";
+ ctx.stroke();
+ readyGrp();
+}
+
+function ciz_b() {
+ if (document.all.grid.checked) grid_();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var t=-x_o+pisdg;t<x_o-pisdg;t+=eval(x_step)) {
+  ffvxy_arr.push([t,fonksiyonumb(t/skala_)]);
+  var X = x_o + ffvxy_arr[ffvxy_arr.length-1][0];
+  var Y = y_o - ffvxy_arr[ffvxy_arr.length-1][1];
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+ }
+ ctx.lineWidth = 1.7; // bitir
+ ctx.strokeStyle = "#0000FFFF";
+ ctx.stroke();
+ if (document.all.turev.checked) {
+  ctx.moveTo(0,0); // turev
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.turev(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#FF000088";
+  ctx.stroke();
+ }
+ if (document.all.integral.checked) {
+  ctx.moveTo(0,0); // integral
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.integral(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#0000FF88";
+  ctx.stroke();
+ }
+ readyGrp();
+}
+
+function ciz_bcircular() {
+ if (document.all.rgrid.checked) grid_circular();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var i=-360;i<=360;i+=eval(x_step)) {
+  var j = fonksiyonumb(i/180*Math.PI);
+  var X = x_o + j*Math.cos(i/180*Math.PI);
+  var Y = y_o - j*Math.sin(i/180*Math.PI);
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+  ffvxy_arr.push([i,j]);
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#0000FFFF";
+ ctx.stroke();
+ readyGrp();
+}
+
+function ciz_y() {
+ if (document.all.grid.checked) grid_();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var t=-x_o+pisdg;t<x_o-pisdg;t+=eval(x_step)) {
+  ffvxy_arr.push([t,fonksiyonumy(t/skala_)]);
+  var X = x_o + ffvxy_arr[ffvxy_arr.length-1][0];
+  var Y = y_o - ffvxy_arr[ffvxy_arr.length-1][1];
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+ }
+ ctx.lineWidth = 1.7; // bitir
+ ctx.strokeStyle = "#FFFF00FF";
+ ctx.stroke();
+ if (document.all.turev.checked) {
+  ctx.moveTo(0,0); // turev
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.turev(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#FF000050";
+  ctx.stroke();
+ }
+ if (document.all.integral.checked) {
+  ctx.moveTo(0,0); // integral
+  ctx.beginPath();
+  for (var i=0;i<ffvxy_arr.length;i+=eval(x_step)) {
+   var X = i + pisdg;
+   var Y = y_o - oper.integral(i);
+   ctx.lineTo(X,Y); // dongu
+  }
+  ctx.lineWidth = 0.7; // bitir
+  ctx.strokeStyle = "#0000FF50";
+  ctx.stroke();
+ }
+ readyGrp();
+}
+
+function ciz_ycircular() {
+ if (document.all.rgrid.checked) grid_circular();
+ ctx.moveTo(0,0); // kur
+ ctx.beginPath();
+ ffv_arr = [];
+ ffvxy_arr = [];
+ for(var i=-360;i<=360;i+=eval(x_step)) {
+  var j = fonksiyonumy(i/180*Math.PI);
+  ffvxy_arr.push([j,i]);
+  var X = x_o + j*Math.cos(i/180*Math.PI);
+  var Y = y_o - j*Math.sin(i/180*Math.PI);
+  ctx.lineTo(X,Y); // dongu
+  ffv_arr.push([X,Y]);
+  ffvxy_arr.push([i,j]);
+ }
+ ctx.lineWidth = 1; // bitir
+ ctx.strokeStyle = "#B4B400FF";
+ ctx.stroke();
+ readyGrp();
+}
+
+function fonksiyonumr(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumr.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumg(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumg.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumb(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumb.value + ");\ndeger");
+ return Y*skala_;
+}
+
+function fonksiyonumy(X) {
+ var Y = 0;
+ Y = eval("var x = " + X + "; var deger = (" + document.all.fonksiyonumy.value + ");\ndeger");
+ return Y*skala_;
+}
+</script>
+</head>
+<body>
+<table id="tabloa" style="display:none;background-color:#fffff2;position:relative;left:1em;top:1em;">
+<tr><td style="overflow:scroll;border:1px solid black;position:relative;">
+<canvas width="800" height="600" id="tuval" style="width:100%;height:100%;background-color:#242435;"></canvas>
+<div id="pointer" style="position:absolute;left:0;top:0;border-radius:50%;border:1px solid black;width:5px;height:5px;background-color:#FFFFFF80;">&nbsp;</div>
+<div id="pointerh" style="color:white;display:none;position:absolute;left:0;top:0;border:0.5px solid black;width:0;height:100%;background-color:transparent;">&nbsp;</div>
+<div id="pointerv" style="color:white;display:none;position:absolute;left:0;top:0;border:0.5px solid black;width:100%;height:0;background-color:transparent;">&nbsp;</div>
+</td></tr>
+<tr><td>
+<font id="info" style="display:;">[]</font>
+<button onclick="FileSave();">Kaydet</button>
+<div id="legend" style="position:absolute;right:0;bottom:0;border:1px solid gray;background-color:white;margin:0.2em;padding:1em;">
+<font color="red">Y</font> = <input type="text" id="fonksiyonumr" value="7" /> <button onclick="yap_r();">Tamam</button> <button onclick="yap_rcircular();">Tamam</button><br/>
+<font color="green">Y</font> = <input type="text" id="fonksiyonumg" value="Math.sin(x)" /> <button onclick="yap_g();">Tamam</button> <button onclick="yap_gcircular();">Tamam</button><br/>
+<font color="blue">Y</font> = <input type="text" id="fonksiyonumb" value="Math.exp(-x*x)*3" /> <button onclick="yap_b();">Tamam</button> <button onclick="yap_bcircular();">Tamam</button><br/>
+<font color="yellow">Y</font> = <input type="text" id="fonksiyonumy" value="Math.exp(-x*x)*x*Math.sqrt(Math.E*2)" /> <button onclick="yap_y();">Tamam</button> <button onclick="yap_ycircular();">Tamam</button><br/>
+<button onclick="grid_();">Grid</button> <input onchange="if (this.checked) document.all.rgrid.checked=false;" type="checkbox" value="1" id="grid"/>
+<button onclick="grid_circular();">RGrid</button> <input onchange="if (this.checked) document.all.grid.checked=false;" type="checkbox" value="0" id="rgrid"/>
+<button onclick="ctx.clearRect(0,0,doc.width,doc.height);">Temizle</button>
+<label style="color:red;"><input type="checkbox" id="turev" />F(x)/Dx</label>
+<label style="color:blue;"><input type="checkbox" id="integral" />F(x)Dx</label>
+
+<br/>
+<button onclick="ffv_setPos(0);">Pointer (<font color="red" id="pointerbutton">x100</font>)</button>
+<input value="50" type="range" max="100" min="1" onchange="document.all.pointerbutton.innerText='x'+this.value;pointtime=Math.floor(Math.log(100/this.value)*50);" />
+<input value="50" type="range" max="100" min="1" onchange="x_step=this.value;" />
+</div>
+
+</td></tr>
+</table>
+<script>
+var doc,ctx,pointer;
+setTimeout(function() {
+ document.all.tabloa.style.display = "";
+ doc = document.all.tuval;
+ pointer = document.all.pointer;
+ ctx = doc.getContext("2d");
+ grid_();
+ ffv_setPos(0);
+ ffv_arr = [];
+ yap_r = function() {
+  ciz_r();
+ };
+ yap_g = function() {
+  ciz_g();
+ };
+ yap_b = function() {
+  ciz_b();
+ };
+ yap_y = function() {
+  ciz_y();
+ };
+ yap_rcircular = function() {
+  ciz_rcircular();
+ };
+ yap_gcircular = function() {
+  ciz_gcircular();
+ };
+ yap_bcircular = function() {
+  ciz_bcircular();
+ };
+ yap_ycircular = function() {
+  ciz_ycircular();
+ };
+},1000);
+</script>
+</body>
+</html>
